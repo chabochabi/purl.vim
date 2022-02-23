@@ -72,12 +72,16 @@ function! s:find_method(curl)
 endfunction
 
 function! s:find_data(curl)
-    let data = matchstr(a:curl, '\c--data \| -d \| --data-raw\([''"]\)\zs.\{-}\ze\1')
+    let data = matchstr(a:curl, '\c--data \| -d \| --data-raw \([''"]\)\zs.\{-}\ze\1')
     let split_data = split(data, "&")
     let data_dict = {}
     for d in split_data
         let pair = split(d, "=")
-        let data_dict[pair[0]] = pair[1]
+        if len(pair) == 2
+            let data_dict[pair[0]] = pair[1]
+        else
+            let data_dict[pair[0]] = ""
+        endif
     endfor
     return data_dict 
 endfunction

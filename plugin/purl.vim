@@ -61,7 +61,7 @@ endfunction
 function! s:find_method(curl)
     let method = matchstr(a:curl, '\c-X \([''"]\)\zs.\{-}\ze\1')
     if empty(method)
-        let data = match(a:curl, '\c --data \| -d')
+        let data = match(a:curl, '\c --data \| -d \| --data-raw')
         if data < 0
             let method = "GET"
         else
@@ -72,7 +72,7 @@ function! s:find_method(curl)
 endfunction
 
 function! s:find_data(curl)
-    let data = matchstr(a:curl, '\c--data \([''"]\)\zs.\{-}\ze\1')
+    let data = matchstr(a:curl, '\c--data \| -d \| --data-raw\([''"]\)\zs.\{-}\ze\1')
     let split_data = split(data, "&")
     let data_dict = {}
     for d in split_data
